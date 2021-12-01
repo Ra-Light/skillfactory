@@ -90,49 +90,66 @@ LIMIT 1
 ### Задание 4.4
 #### Вопрос 1
 ``` sql
-	select min(scheduled_departure) as first_flight from dst_project.flights fl
+SELECT min(scheduled_departure) AS first_flight
+FROM dst_project.flights fl
 ```
 
 #### Вопрос 2
 ``` sql
-select extract(epoch from (fl.scheduled_arrival - fl.scheduled_departure)::interval)/60 as flight_time from dst_project.flights fl
-order by fl.scheduled_arrival - fl.scheduled_departure desc 
-limit 1
+SELECT extract(epoch
+               FROM (fl.scheduled_arrival - fl.scheduled_departure)::interval)/60 AS flight_time
+FROM dst_project.flights fl
+ORDER BY fl.scheduled_arrival - fl.scheduled_departure DESC
+LIMIT 1
 ```
 
 
 #### Вопрос 3
 ``` sql
-select fl.*, (fl.scheduled_arrival - fl.scheduled_departure) as scheduled_flight_time from dst_project.flights fl 
-where departure_airport = 'DME' and arrival_airport in ('UUS','AAQ','PCS') or departure_airport = 'SVO' and arrival_airport = 'UUS'
-order by (fl.scheduled_arrival - fl.scheduled_departure) desc 
-limit 1
+SELECT fl.*,
+       (fl.scheduled_arrival - fl.scheduled_departure) AS scheduled_flight_time
+FROM dst_project.flights fl
+WHERE departure_airport = 'DME'
+  AND arrival_airport in ('UUS',
+                          'AAQ',
+                          'PCS')
+  OR departure_airport = 'SVO'
+  AND arrival_airport = 'UUS'
+ORDER BY (fl.scheduled_arrival - fl.scheduled_departure) DESC
+LIMIT 1
 ```
 
 #### Вопрос 4
 ``` sql
-select avg(extract(epoch from (fl.scheduled_arrival - fl.scheduled_departure)::interval)/60) as avg_flight_time from dst_project.flights fl
+SELECT avg(extract(epoch
+                   FROM (fl.scheduled_arrival - fl.scheduled_departure)::interval)/60) AS avg_flight_time
+FROM dst_project.flights fl
 ```
 
 ### Задание 4.5
 #### Вопрос 1
 ``` sql
-	select fare_conditions, count(seat_no) as seats from dst_project.seats s
-where s.aircraft_code = 'SU9'
-group by fare_conditions
-order by count(seat_no) desc limit 1
+SELECT fare_conditions,
+       count(seat_no) AS seats
+FROM dst_project.seats s
+WHERE s.aircraft_code = 'SU9'
+GROUP BY fare_conditions
+ORDER BY count(seat_no) DESC
+LIMIT 1
 ```
 
 #### Вопрос 2
 ``` sql
-select min(total_amount) as min_amount from dst_project.bookings
+SELECT min(total_amount) AS min_amount
+FROM dst_project.bookings
 ```
 
 #### Вопрос 3
 ``` sql
-select * from dst_project.tickets t
-inner join dst_project.boarding_passes bp on bp.ticket_no = t.ticket_no
-where passenger_id = '4313 788533' 
+SELECT *
+FROM dst_project.tickets t
+INNER JOIN dst_project.boarding_passes bp ON bp.ticket_no = t.ticket_no
+WHERE passenger_id = '4313 788533'
 ```
 
 ### Данные для анализа
